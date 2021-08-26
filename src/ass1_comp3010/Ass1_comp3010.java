@@ -16,37 +16,31 @@ public class Ass1_comp3010 {
 		String input = scan.nextLine();
 		groupCount = Integer.parseInt(input);
 		
-		ArrayList<char[]> members = new ArrayList<char[]>(groupCount);
+		ArrayList<String[]> members = new ArrayList<String[]>(groupCount);
 		
 		//Ask the members belonging to each group
 		System.out.println("Enter the list of members of each group");		
 		for(int i=0; i<groupCount; i++) {
 			input = scan.nextLine();
-			members.add(removeChar(input.toCharArray(), ' '));
+			members.add(input.split(" "));
 		}
 		
 		//Close Scanner
 		scan.close();
 		
-		// Displaying groups and members in readable manner
-		for(char[] mem : members) {
-			System.out.println(mem);
-		}
-		
-		while(members.size()>0) {
-			char pickedMember = findMembers(members);
+		while(!members.isEmpty()) {
+			String pickedMember = findMembers(members);
+			System.out.println("picked " + pickedMember );
+			System.out.println(members.size());
 			
-			for(int i=0; i<members.size(); i++) {
-				for(char c : members.get(i)) {
-					if(c == pickedMember) {
+			for(int i=members.size()-1; i>=0; i--) {
+				for(String c : members.get(i)) {
+					if(c.equals(pickedMember)) {
 						members.remove(i);
+						break;
 					}
 				}
 			}
-		}
-		
-		for(char[] mem : members) {
-			System.out.println(mem);
 		}
 		
 	}
@@ -67,18 +61,18 @@ public class Ass1_comp3010 {
 		return memberString.toCharArray();
 	}
 	
-	public static char findMembers(ArrayList<char[]> members) {
-		int longestStreak = 1;
+	public static String findMembers(ArrayList<String[]> members) {
+		int longestStreak = 0;
 		int currentStreak;
-		char memberID = '\0';
+		String memberID = "";
 		
 		for(int i=0; i<members.size()-1; i++) {
 			for(int j=0; j<members.get(i).length; j++) {
-				if(members.get(i)[j] !=0) {
+				if(!members.get(i)[j].equals("0")) {
 					currentStreak = 1;
 					for(int k=i+1; k<members.size(); k++) {
 						for(int l=0; l<members.get(k).length; l++) {
-							if(members.get(k)[l]!=0 && members.get(i)[j] == members.get(k)[l]) {
+							if(!members.get(k)[l].equals("0") && members.get(i)[j].equals(members.get(k)[l])) {
 								currentStreak++;
 								if(currentStreak>longestStreak) {
 									longestStreak = currentStreak;
@@ -88,12 +82,11 @@ public class Ass1_comp3010 {
 						}
 					}
 				}
-				
 			}
 		}
 		
-		System.out.println("Chosen");
-		System.out.println(longestStreak + " " + memberID);
+		//System.out.println("Chosen");
+		//System.out.println(longestStreak + " " + memberID);
 		
 		return memberID;
 	}
