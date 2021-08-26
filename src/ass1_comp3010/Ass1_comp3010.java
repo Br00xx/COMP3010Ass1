@@ -17,14 +17,12 @@ public class Ass1_comp3010 {
 		groupCount = Integer.parseInt(input);
 		
 		ArrayList<char[]> members = new ArrayList<char[]>(groupCount);
-		ArrayList<Character> groups = new ArrayList<Character>();
 		
 		//Ask the members belonging to each group
 		System.out.println("Enter the list of members of each group");		
 		for(int i=0; i<groupCount; i++) {
 			input = scan.nextLine();
-			members.add(input.toCharArray());
-			groups.add((char)(i+1));
+			members.add(removeChar(input.toCharArray(), ' '));
 		}
 		
 		//Close Scanner
@@ -35,28 +33,70 @@ public class Ass1_comp3010 {
 			System.out.println(mem);
 		}
 		
-		/*
-		 * O(n) char removal
-		 * 	put members in char array and remove spacings
-		 */
-		/*
-		char[] charsMembers = input.toCharArray();
-		char removeCharacter = ' ';
-		int next = 0;
-		for (int cur = 0; cur < charsMembers.length; ++cur) {
-		    if (charsMembers[cur] != removeCharacter) {
-		    	charsMembers[next++] = charsMembers[cur];
-		    }
+		while(members.size()>0) {
+			char pickedMember = findMembers(members);
+			
+			for(int i=0; i<members.size(); i++) {
+				for(char c : members.get(i)) {
+					if(c == pickedMember) {
+						members.remove(i);
+					}
+				}
+			}
 		}
-		String members = new String(charsMembers, 0, next);
-		charsMembers = members.toCharArray();
-		*/
 		
-		//findSolution(charsMembers);
+		for(char[] mem : members) {
+			System.out.println(mem);
+		}
+		
 	}
 	
+	/*
+	 * O(n) char removal
+	 * 	put members in char array and remove spacings
+	 */
+	public static char[] removeChar(char[] list, char remove) {
+		int next = 0; 
+		
+		for(int cur=0; cur<list.length; cur++) {
+			if(list[cur] != remove) {
+				list[next++] = list[cur];
+			}
+		}
+		String memberString = new String(list, 0, next);
+		return memberString.toCharArray();
+	}
 	
-	
+	public static char findMembers(ArrayList<char[]> members) {
+		int longestStreak = 1;
+		int currentStreak;
+		char memberID = '\0';
+		
+		for(int i=0; i<members.size()-1; i++) {
+			for(int j=0; j<members.get(i).length; j++) {
+				if(members.get(i)[j] !=0) {
+					currentStreak = 1;
+					for(int k=i+1; k<members.size(); k++) {
+						for(int l=0; l<members.get(k).length; l++) {
+							if(members.get(k)[l]!=0 && members.get(i)[j] == members.get(k)[l]) {
+								currentStreak++;
+								if(currentStreak>longestStreak) {
+									longestStreak = currentStreak;
+									memberID = members.get(i)[j];
+								}
+							}
+						}
+					}
+				}
+				
+			}
+		}
+		
+		System.out.println("Chosen");
+		System.out.println(longestStreak + " " + memberID);
+		
+		return memberID;
+	}
 	
 	public static void findSolution(char[] members) {
 		int longestStreak = 1;
