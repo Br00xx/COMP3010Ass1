@@ -1,4 +1,5 @@
 package ass1_comp3010;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -13,38 +14,75 @@ public class Ass1_comp3010 {
 		//Ask how many groups
 		System.out.println("Enter the number of groups from which you must find representatives:");
 		String input = scan.nextLine();
-		
 		groupCount = Integer.parseInt(input);
 		
-		//Ask the members belonging to each group
-		System.out.println("Enter the list of members of each group");
-		input = scan.nextLine();		
+		ArrayList<char[]> members = new ArrayList<char[]>(groupCount);
+		ArrayList<Character> groups = new ArrayList<Character>();
 		
-		for(int i=1; i<groupCount; i++) {
-			input = input + scan.nextLine();
+		//Ask the members belonging to each group
+		System.out.println("Enter the list of members of each group");		
+		for(int i=0; i<groupCount; i++) {
+			input = scan.nextLine();
+			members.add(input.toCharArray());
+			groups.add((char)(i+1));
 		}
 		
 		//Close Scanner
 		scan.close();
 		
-		String[] strMembers = input.split("0");
-		for(String n : strMembers)
-			System.out.println(n);
+		// Displaying groups and members in readable manner
+		for(char[] mem : members) {
+			System.out.println(mem);
+		}
 		
-		//Put list into array
-		
-		
-		//Make second array with associated group
 		/*
-		 * Members
-		 * 1 2 3 0 2 3 4 0 3 4 5 0
-		 * Group
-		 * 1 1 1 0 2 2 2 0 3 3 3 0 
+		 * O(n) char removal
+		 * 	put members in char array and remove spacings
 		 */
+		/*
+		char[] charsMembers = input.toCharArray();
+		char removeCharacter = ' ';
+		int next = 0;
+		for (int cur = 0; cur < charsMembers.length; ++cur) {
+		    if (charsMembers[cur] != removeCharacter) {
+		    	charsMembers[next++] = charsMembers[cur];
+		    }
+		}
+		String members = new String(charsMembers, 0, next);
+		charsMembers = members.toCharArray();
+		*/
 		
-		// Sort top list while moving bottom
+		//findSolution(charsMembers);
+	}
+	
+	
+	
+	
+	public static void findSolution(char[] members) {
+		int longestStreak = 1;
+		int currentStreak = 1;
+		char memberID = '\0';
 		
 		
-	}	
+		//While 
+		for(int i = 0; i< members.length; i++) {
+			currentStreak = 1;
+			for(int j = i+1; j< members.length; j++) {
+				if(members[i] != '0' || members[j] != '0') {
+					if(members[i] == members[j]) {
+						System.out.println("Match " + members[i] + " " + currentStreak);
+						currentStreak++;
+						if(currentStreak>longestStreak) {
+							longestStreak = currentStreak;
+							memberID = members[i];
+						}
+					}
+				}
+			}
+		}
+		System.out.println();
+		System.out.println(longestStreak + " " + memberID);
+		
+	}
 
 }
