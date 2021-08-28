@@ -18,18 +18,48 @@ public class Ass1_comp3010 {
 		String input = scan.nextLine();
 		groupCount = Integer.parseInt(input);
 		
-		ArrayList<String[]> members = new ArrayList<String[]>(groupCount);
+		ArrayList<String> members = new ArrayList<String>();
+		ArrayList<String> memGroup = new ArrayList<String>();
 		
 		//Ask the members belonging to each group
-		System.out.println("Enter the list of members of each group");		
+		System.out.println("Enter the list of members of each group");
+		
+		//Collecting all the members and splitting into an array
+		input = "";
 		for(int i=0; i<groupCount; i++) {
-			input = scan.nextLine();
-			members.add(input.split(" "));
+			input = input + " " + scan.nextLine();
 		}
+		String[] membersTemp = input.split(" "); 
+		String[] groupTemp = new String[membersTemp.length];
+		
+		//Making a second array of same length but the same index on second array as the first
+		// is the associated group number
+		int grp = 0;
+		for(int i=0; i<membersTemp.length; i++) {
+			if(!membersTemp[i].equals("0")) {
+				groupTemp[i] = String.valueOf(grp);
+			} 
+			else if(membersTemp[i].equals("0")) {
+				groupTemp[i] = String.valueOf(grp);
+				grp++;
+			}
+		}
+		
+		//Merge sort the two list in sync.
+		mergeSort(membersTemp, groupTemp, 0, membersTemp.length-1);
 		
 		//Close Scanner
 		scan.close();
 		
+		for(int i=0; i<membersTemp.length; i++) {
+			System.out.println(membersTemp[i] + " " + groupTemp[i]);
+			members.add(membersTemp[i]);
+			memGroup.add(groupTemp[i]);
+		}
+		
+		
+		
+		/*
 		while(!members.isEmpty()) {
 			String pickedMember = findMembers(members);
 			System.out.println("picked " + pickedMember );
@@ -43,25 +73,10 @@ public class Ass1_comp3010 {
 				}
 			}
 		}
+		*/
 		
 		long end = System.currentTimeMillis();
-		System.out.println(end - start);
-	}
-	
-	/*
-	 * O(n) char removal
-	 * 	put members in char array and remove spacings
-	 */
-	public static char[] removeChar(char[] list, char remove) {
-		int next = 0; 
-		
-		for(int cur=0; cur<list.length; cur++) {
-			if(list[cur] != remove) {
-				list[next++] = list[cur];
-			}
-		}
-		String memberString = new String(list, 0, next);
-		return memberString.toCharArray();
+		System.out.println("Time: " + (end - start));
 	}
 	
 	public static String findMembers(ArrayList<String[]> members) {
@@ -124,5 +139,103 @@ public class Ass1_comp3010 {
 		System.out.println(longestStreak + " " + memberID);
 		
 	}
+	
+	/*
+	 * Using modified code from this post
+	 *  https://stackoverflow.com/questions/23064247/java-mergesort-with-strings 
+	 */
+	public static void mergeSort(String[] members, String[] group, int from, int to) {
+		if(from == to) {
+			return;
+		}
+		int mid = (from + to)/2;
+		// sort the first and the second half
+		mergeSort(members, group, from, mid);
+		mergeSort(members, group, mid+1, to);
+		merge(members, group, from, mid, to);
+	}// end mergeSort
+	
+    public static void merge(String[] members, String[] group, int from, int mid, int to) {
+        int n = to - from + 1;       // size of the range to be merged
+        String[] b = new String[n];   // merge both halves into a temporary array b
+        String[] c = new String[n];
+        int i1 = from;               // next element to consider in the first range
+        int i2 = mid + 1;            // next element to consider in the second range
+        int j = 0;                   // next open position in b
 
+        // as long as neither i1 nor i2 past the end, move the smaller into b
+        while (i1 <= mid && i2 <= to) {
+            if (members[i1].compareTo(members[i2]) < 0) {
+                b[j] = members[i1];
+                c[j] = group[i1];
+                i1++;
+            } else {
+                b[j] = members[i2];
+                c[j] = group[i2];
+                i2++;
+            }
+            j++;
+        }
+
+        // note that only one of the two while loops below is executed
+        // copy any remaining entries of the first half
+        while (i1 <= mid) {
+            b[j] = members[i1];
+            c[j] = group[i1];
+            i1++;
+            j++;
+        }
+
+        // copy any remaining entries of the second half
+        while (i2 <= to) {
+            b[j] = members[i2];
+            c[j] = group[i2];
+            i2++;
+            j++;
+        }
+
+        // copy back from the temporary array
+        for (j = 0; j < n; j++) {
+            members[from + j] = b[j];
+            group[from + j] = c[j];
+        }
+    }//end merge
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
