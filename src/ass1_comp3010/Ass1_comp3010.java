@@ -6,6 +6,8 @@ import java.util.Scanner;
 public class Ass1_comp3010 {
 	
 	public static void main(String[] args) {
+		long start = System.currentTimeMillis();
+		
 		int groupCount = 0;
 		
 		//Open scanner
@@ -31,7 +33,6 @@ public class Ass1_comp3010 {
 		while(!members.isEmpty()) {
 			String pickedMember = findMembers(members);
 			System.out.println("picked " + pickedMember );
-			System.out.println(members.size());
 			
 			for(int i=members.size()-1; i>=0; i--) {
 				for(String c : members.get(i)) {
@@ -43,6 +44,8 @@ public class Ass1_comp3010 {
 			}
 		}
 		
+		long end = System.currentTimeMillis();
+		System.out.println(end - start);
 	}
 	
 	/*
@@ -65,6 +68,10 @@ public class Ass1_comp3010 {
 		int longestStreak = 0;
 		int currentStreak;
 		String memberID = "";
+		
+		if(members.size() == 1) {
+			return members.get(0)[0];
+		}
 		
 		for(int i=0; i<members.size()-1; i++) {
 			for(int j=0; j<members.get(i).length; j++) {
