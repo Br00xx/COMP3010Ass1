@@ -32,7 +32,7 @@ public class Ass1_comp3010 {
 		
 		while(!members.isEmpty()) {
 			String pickedMember = findMembers(members);
-			//System.out.println("picked " + pickedMember );
+			System.out.println("picked " + pickedMember );
 			
 			for(int i=members.size()-1; i>=0; i--) {
 				for(String c : members.get(i)) {
