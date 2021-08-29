@@ -63,23 +63,16 @@ public class Ass1_comp3010 {
 		}
 		
 		//Run pickMembers then remove members until ArrayList is empty
-		ArrayList<String> selectedMember = new ArrayList<String>();
 		while(!members.isEmpty()) {
 			String picked = pickMembers(members, memGroup);
-			selectedMember.add(picked);
 			
-			//System.out.println("Picked " + picked);
+			System.out.println("Picked " + picked);
 			
 			removeElements(members, memGroup, picked);
 		}
 		
 		long end = System.currentTimeMillis();
 		System.out.println("Time: " + (end - start));
-		
-		System.out.println(selectedMember.size());
-		for(String m : selectedMember) {
-			System.out.print(m + " ");
-		}
 	}
 	
 	// Find longest streak
