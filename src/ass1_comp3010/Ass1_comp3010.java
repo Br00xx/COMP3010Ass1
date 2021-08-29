@@ -56,7 +56,7 @@ public class Ass1_comp3010 {
 		// O(n)
 		for(int i=0; i<membersTemp.length; i++) {
 			if(!membersTemp[i].equals("0")) {
-				//System.out.println(membersTemp[i] + " " + groupTemp[i]);
+				System.out.println(membersTemp[i] + " " + groupTemp[i]);
 				members.add(membersTemp[i]);
 				memGroup.add(groupTemp[i]);
 			}
