@@ -25,8 +25,8 @@ public class Ass1_comp3010 {
 		System.out.println("Enter the list of members of each group");
 		
 		//Collecting all the members and splitting into an array
-		input = "";
-		for(int i=0; i<groupCount; i++) {
+		input = scan.nextLine();
+		for(int i=1; i<groupCount; i++) {
 			input = input + " " + scan.nextLine();
 		}
 		String[] membersTemp = input.split(" "); 
@@ -46,39 +46,85 @@ public class Ass1_comp3010 {
 		}
 		
 		//Merge sort the two list in sync.
+		// O(nlogn)
 		mergeSort(membersTemp, groupTemp, 0, membersTemp.length-1);
 		
 		//Close Scanner
 		scan.close();
 		
+		//Adding members numbers are associated group number to ArrayLists
+		// O(n)
 		for(int i=0; i<membersTemp.length; i++) {
-			System.out.println(membersTemp[i] + " " + groupTemp[i]);
-			members.add(membersTemp[i]);
-			memGroup.add(groupTemp[i]);
-		}
-		
-		
-		
-		/*
-		while(!members.isEmpty()) {
-			String pickedMember = findMembers(members);
-			System.out.println("picked " + pickedMember );
-			
-			for(int i=members.size()-1; i>=0; i--) {
-				for(String c : members.get(i)) {
-					if(c.equals(pickedMember)) {
-						members.remove(i);
-						break;
-					}
-				}
+			if(!membersTemp[i].equals("0")) {
+				//System.out.println(membersTemp[i] + " " + groupTemp[i]);
+				members.add(membersTemp[i]);
+				memGroup.add(groupTemp[i]);
 			}
 		}
-		*/
+		
+		//Run pickMembers then remove members until ArrayList is empty
+		while(!members.isEmpty()) {
+			String picked = pickMembers(members, memGroup);
+			
+			System.out.println("Picked " + picked);
+			
+			removeElements(members, memGroup, picked);
+		}
 		
 		long end = System.currentTimeMillis();
 		System.out.println("Time: " + (end - start));
 	}
 	
+	// Find longest streak
+	public static String pickMembers(ArrayList<String> mem, ArrayList<String> groups) {
+		int longestStreak = 0;
+		int currentStreak = 1;
+		String winnerMem = mem.get(0);
+		String curMem = mem.get(0);
+
+		
+		for(int i=1; i<mem.size(); i++) {
+			if(curMem.equals(mem.get(i))) {
+				currentStreak++;
+			}
+			if(currentStreak>longestStreak) {
+				longestStreak = currentStreak;
+				winnerMem = curMem;
+			}
+			if(!curMem.equals(mem.get(i))) {
+				curMem = mem.get(i);
+				currentStreak = 1;
+			}
+		}
+		
+		return winnerMem;
+	}
+	
+	// Loop through array list removing items when they equal memNum or groupNum
+	public static void removeElements(ArrayList<String> mem, ArrayList<String> groups, String memNum) {
+		ArrayList<String> removeGroups = new ArrayList<String>();
+		// Checks which groups contain the chosen member
+		for(int i=mem.size()-1; i>=0; i--) {
+			if(mem.get(i).equals(memNum)) {
+				removeGroups.add(groups.get(i));
+			}
+		}
+		
+		//Removes all the elements in those groups
+		for(int i=mem.size()-1; i>=0; i--) {
+			for(String n : removeGroups) {
+				if(groups.get(i).equals(n)) {
+					mem.remove(i);
+					groups.remove(i);
+					break;
+				}
+			}
+		}
+		
+	}
+	
+	//Old method
+	// Not good efficiency
 	public static String findMembers(ArrayList<String[]> members) {
 		int longestStreak = 0;
 		int currentStreak;
@@ -113,36 +159,11 @@ public class Ass1_comp3010 {
 		return memberID;
 	}
 	
-	public static void findSolution(char[] members) {
-		int longestStreak = 1;
-		int currentStreak = 1;
-		char memberID = '\0';
-		
-		
-		//While 
-		for(int i = 0; i< members.length; i++) {
-			currentStreak = 1;
-			for(int j = i+1; j< members.length; j++) {
-				if(members[i] != '0' || members[j] != '0') {
-					if(members[i] == members[j]) {
-						System.out.println("Match " + members[i] + " " + currentStreak);
-						currentStreak++;
-						if(currentStreak>longestStreak) {
-							longestStreak = currentStreak;
-							memberID = members[i];
-						}
-					}
-				}
-			}
-		}
-		System.out.println();
-		System.out.println(longestStreak + " " + memberID);
-		
-	}
-	
 	/*
 	 * Using modified code from this post
-	 *  https://stackoverflow.com/questions/23064247/java-mergesort-with-strings 
+	 *  https://stackoverflow.com/questions/23064247/java-mergesort-with-strings
+	 *  Merge sort but with Strings
+	 *  The order that members gets ordered into is the same that group is sorted into 
 	 */
 	public static void mergeSort(String[] members, String[] group, int from, int to) {
 		if(from == to) {
