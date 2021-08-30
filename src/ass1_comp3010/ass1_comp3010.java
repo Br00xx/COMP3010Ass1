@@ -6,8 +6,8 @@ import java.util.Scanner;
 public class ass1_comp3010 {
 	
 	public static void main(String[] args) {
-		long start = System.currentTimeMillis();
-		
+		long start = System.nanoTime();
+
 		int groupCount = 0;
 		
 		//Open scanner
@@ -78,7 +78,7 @@ public class ass1_comp3010 {
 			removeElements(members, memGroup, picked);
 		}
 		
-		long end = System.currentTimeMillis();
+		long end = System.nanoTime();
 		System.out.println("Time: " + (end - start));
 		
 		System.out.println(selectedMember.size());
