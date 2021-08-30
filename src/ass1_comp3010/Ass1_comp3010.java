@@ -30,9 +30,12 @@ public class Ass1_comp3010 {
 		//Close Scanner
 		scan.close();
 		
+		ArrayList<String> pickedMembers = new ArrayList<String>();
 		while(!members.isEmpty()) {
 			String pickedMember = findMembers(members);
-			System.out.println("picked " + pickedMember );
+			pickedMembers.add(pickedMember);
+			
+			//System.out.println("picked " + pickedMember );
 			
 			for(int i=members.size()-1; i>=0; i--) {
 				for(String c : members.get(i)) {
@@ -46,6 +49,11 @@ public class Ass1_comp3010 {
 		
 		long end = System.currentTimeMillis();
 		System.out.println(end - start);
+		System.out.println(pickedMembers.size());
+		for(String m : pickedMembers) {
+			System.out.print(m + " ");
+		}
+		
 	}
 	
 	/*
@@ -67,11 +75,7 @@ public class Ass1_comp3010 {
 	public static String findMembers(ArrayList<String[]> members) {
 		int longestStreak = 0;
 		int currentStreak;
-		String memberID = "";
-		
-		if(members.size() == 1) {
-			return members.get(0)[0];
-		}
+		String memberID = members.get(0)[0];
 		
 		for(int i=0; i<members.size()-1; i++) {
 			for(int j=0; j<members.get(i).length; j++) {
