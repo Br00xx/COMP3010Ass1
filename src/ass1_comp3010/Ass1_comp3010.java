@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Ass1_comp3010 {
 	
 	public static void main(String[] args) {
-		long start = System.currentTimeMillis();
+		long start = System.nanoTime();
 		
 		int groupCount = 0;
 		
@@ -47,8 +47,9 @@ public class Ass1_comp3010 {
 			}
 		}
 		
-		long end = System.currentTimeMillis();
+		long end = System.nanoTime();
 		System.out.println(end - start);
+		
 		System.out.println(pickedMembers.size());
 		for(String m : pickedMembers) {
 			System.out.print(m + " ");
