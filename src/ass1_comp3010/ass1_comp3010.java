@@ -28,7 +28,7 @@ public class ass1_comp3010 {
 			input = input + " " + scan.nextLine();
 		}
 		
-		long start = System.nanoTime();
+		long start = System.currentTimeMillis();
 		
 		String[] temp = input.split(" "); 
 		int[] membersTemp = new int[temp.length];
@@ -78,7 +78,7 @@ public class ass1_comp3010 {
 			removeElements(members, memGroup, picked);
 		}
 		
-		long end = System.nanoTime();
+		long end = System.currentTimeMillis();
 		System.out.println("Time: " + (end - start));
 		
 		System.out.println(selectedMember.size());
