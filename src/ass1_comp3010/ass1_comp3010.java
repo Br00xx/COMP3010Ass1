@@ -6,8 +6,6 @@ import java.util.Scanner;
 public class ass1_comp3010 {
 	
 	public static void main(String[] args) {
-		long start = System.nanoTime();
-
 		int groupCount = 0;
 		
 		//Open scanner
@@ -29,6 +27,8 @@ public class ass1_comp3010 {
 		for(int i=1; i<groupCount; i++) {
 			input = input + " " + scan.nextLine();
 		}
+		
+		long start = System.nanoTime();
 		
 		String[] temp = input.split(" "); 
 		int[] membersTemp = new int[temp.length];
