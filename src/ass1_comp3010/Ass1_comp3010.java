@@ -6,8 +6,6 @@ import java.util.Scanner;
 public class Ass1_comp3010 {
 	
 	public static void main(String[] args) {
-		long start = System.nanoTime();
-		
 		int groupCount = 0;
 		
 		//Open scanner
@@ -30,6 +28,8 @@ public class Ass1_comp3010 {
 		//Close Scanner
 		scan.close();
 		
+		long start = System.currentTimeMillis();
+		
 		ArrayList<String> pickedMembers = new ArrayList<String>();
 		while(!members.isEmpty()) {
 			String pickedMember = findMembers(members);
@@ -47,7 +47,7 @@ public class Ass1_comp3010 {
 			}
 		}
 		
-		long end = System.nanoTime();
+		long end = System.currentTimeMillis();
 		System.out.println(end - start);
 		
 		System.out.println(pickedMembers.size());
