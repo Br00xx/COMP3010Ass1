@@ -22,7 +22,7 @@ public class ass1_comp3010 {
 		//Ask the members belonging to each group
 		System.out.println("Enter the list of members of each group");
 		
-		//Collecting all the members and splitting into an array
+		//Collecting all the members
 		int grp = 1;
 		while(grp <= groupCount) {
 			Integer temp = scan.nextInt();
@@ -45,7 +45,7 @@ public class ass1_comp3010 {
 		
 		//Run pickMembers then remove members until ArrayList is empty
 		ArrayList<Integer> selectedMember = new ArrayList<Integer>();
-		while(!members.isEmpty()) {
+		while(!isAllZeros(members)) {
 			int picked = pickMembers(members, memGroup);
 			selectedMember.add(picked);
 			
@@ -72,20 +72,33 @@ public class ass1_comp3010 {
 
 		
 		for(int i=1; i<mem.size(); i++) {
-			if(curMem == mem.get(i)) {
-				currentStreak++;
-			}
-			if(currentStreak>longestStreak) {
-				longestStreak = currentStreak;
-				winnerMem = curMem;
-			}
-			if(!(curMem == mem.get(i))) {
+			if(curMem == 0) {
 				curMem = mem.get(i);
-				currentStreak = 1;
+			} else if(mem.get(i) != 0) {
+				if(curMem == mem.get(i)) {
+					currentStreak++;
+				}
+				if(currentStreak>longestStreak) {
+					longestStreak = currentStreak;
+					winnerMem = curMem;
+				}
+				if(curMem != mem.get(i)) {
+					curMem = mem.get(i);
+					currentStreak = 1;
+				}
 			}
 		}
 		
 		return winnerMem;
+	}
+	
+	public static Boolean isAllZeros(ArrayList<Integer> mem) {
+		
+		for(Integer m : mem) {
+			if(m != 0) return false;
+		}
+		
+		return true;
 	}
 	
 	// Loop through array list removing items when they equal memNum or groupNum
@@ -102,8 +115,8 @@ public class ass1_comp3010 {
 		for(int i=mem.size()-1; i>=0; i--) {
 			for(int n : removeGroups) {
 				if(groups.get(i) == n) {
-					mem.remove(i);
-					groups.remove(i);
+					mem.set(i, 0);
+					groups.set(i, 0);
 					break;
 				}
 			}
