@@ -15,14 +15,15 @@ public class ass1_comp3010 {
 		System.out.println("Enter the number of groups from which you must find representatives:");
 		groupCount = scan.nextInt();
 		
-		// groupCount*2 as there needs to be at least one member per group followed by a 0
-		ArrayList<Integer> members = new ArrayList<Integer>(groupCount*2);
-		ArrayList<Integer> memGroup = new ArrayList<Integer>(groupCount*2);
+		// Size of groupCount as there needs to be at least one member per group 
+		ArrayList<Integer> members = new ArrayList<Integer>(groupCount);
+		ArrayList<Integer> memGroup = new ArrayList<Integer>(groupCount);
 		
 		//Ask the members belonging to each group
 		System.out.println("Enter the list of members of each group");
 		
-		//Collecting all the members
+		// Adding all the members to ArrayList.
+		// Making a second ArrayList of the same size that contains the group number for each member
 		int grp = 1;
 		while(grp <= groupCount) {
 			Integer temp = scan.nextInt();
@@ -43,13 +44,11 @@ public class ass1_comp3010 {
 		//Close Scanner
 		scan.close();
 		
-		//Run pickMembers then remove members until ArrayList is empty
+		
 		ArrayList<Integer> selectedMember = new ArrayList<Integer>();
 		while(!isAllZeros(members)) {
 			int picked = pickMembers(members, memGroup);
 			selectedMember.add(picked);
-			
-			//System.out.println("Picked " + picked);
 			
 			removeElements(members, memGroup, picked);
 		}
@@ -74,15 +73,14 @@ public class ass1_comp3010 {
 		for(int i=1; i<mem.size(); i++) {
 			if(curMem == 0) {
 				curMem = mem.get(i);
-			} else if(mem.get(i) != 0) {
+			} else {
 				if(curMem == mem.get(i)) {
 					currentStreak++;
-				}
-				if(currentStreak>longestStreak) {
-					longestStreak = currentStreak;
-					winnerMem = curMem;
-				}
-				if(curMem != mem.get(i)) {
+				} else if (mem.get(i) != 0){
+					if(currentStreak>longestStreak) {
+						longestStreak = currentStreak;
+						winnerMem = curMem;
+					}
 					curMem = mem.get(i);
 					currentStreak = 1;
 				}
@@ -104,24 +102,25 @@ public class ass1_comp3010 {
 	// Loop through array list removing items when they equal memNum or groupNum
 	public static void removeElements(ArrayList<Integer> mem, ArrayList<Integer> groups, int memNum) {
 		ArrayList<Integer> removeGroups = new ArrayList<Integer>();
-		// Checks which groups contain the chosen member
+		// Checks which groups contain the selected member
 		for(int i=mem.size()-1; i>=0; i--) {
 			if(mem.get(i).equals(memNum)) {
 				removeGroups.add(groups.get(i));
 			}
 		}
 		
-		//Removes all the elements in those groups
+		// If a member is in one of the groups with the selected member, set it to 0. Essentially deleting it from the list
 		for(int i=mem.size()-1; i>=0; i--) {
-			for(int n : removeGroups) {
-				if(groups.get(i) == n) {
-					mem.set(i, 0);
-					groups.set(i, 0);
-					break;
+			if(mem.get(i) != 0) {
+				for(int n : removeGroups) {
+					if(groups.get(i) == n) {
+						mem.set(i, 0);
+						groups.set(i, 0);
+						break;
+					}
 				}
 			}
 		}
-		
 	}
 	
     public static void merge(ArrayList<Integer> mem, ArrayList<Integer> grp, int l, int m, int r)
