@@ -66,11 +66,11 @@ public class ass1_comp3010 {
 	public static int pickMembers(ArrayList<Integer> mem, ArrayList<Integer> groups) {
 		int longestStreak = 0;
 		int currentStreak = 1;
-		int winnerMem = mem.get(0);
-		int curMem = mem.get(0);
+		int winnerMem = mem.get(mem.size()-1);
+		int curMem = mem.get(mem.size()-1);
 
 		
-		for(int i=1; i<mem.size(); i++) {
+		for(int i=mem.size()-2; i>=0; i--) {
 			if(curMem == 0) {
 				curMem = mem.get(i);
 			} else {
