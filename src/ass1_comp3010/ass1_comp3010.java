@@ -15,7 +15,7 @@ public class ass1_comp3010 {
 		System.out.println("Enter the number of groups from which you must find representatives:");
 		groupCount = scan.nextInt();
 		
-		// Size of groupCount as there needs to be at least one member per group 
+		//Size of groupCount as there needs to be at least one member per group 
 		ArrayList<Integer> members = new ArrayList<Integer>(groupCount);
 		ArrayList<Integer> memGroup = new ArrayList<Integer>(groupCount);
 		
@@ -35,6 +35,7 @@ public class ass1_comp3010 {
 			}
 		}
 		
+		//Recording Start time just before the algorithm starts
 		long start = System.currentTimeMillis();
 		
 		//Merge sort the two list in sync.
@@ -44,7 +45,7 @@ public class ass1_comp3010 {
 		//Close Scanner
 		scan.close();
 		
-		
+		//Main loop of the algorithm, selecting the members and 'removing' the elements from the corresponding groups
 		ArrayList<Integer> selectedMember = new ArrayList<Integer>();
 		while(!isAllZeros(members)) {
 			int picked = pickMembers(members, memGroup);
@@ -56,6 +57,8 @@ public class ass1_comp3010 {
 		long end = System.currentTimeMillis();
 		System.out.println("Time: " + (end - start));
 		
+		//Print out the chosen members.
+		//List is in descending or as the loops go from the back 
 		System.out.println(selectedMember.size());
 		for(int m : selectedMember) {
 			System.out.print(m + " ");
@@ -69,7 +72,8 @@ public class ass1_comp3010 {
 		int winnerMem = mem.get(mem.size()-1);
 		int curMem = mem.get(mem.size()-1);
 
-		
+		//Starting from the back to improve efficiency
+		//Faster loop as you only need to calculate mem.size once as well as increase the chances you find a non zero value later.
 		for(int i=mem.size()-2; i>=0; i--) {
 			if(curMem == 0) {
 				curMem = mem.get(i);
@@ -89,6 +93,7 @@ public class ass1_comp3010 {
 		
 		return winnerMem;
 	}
+	
 	
 	public static Boolean isAllZeros(ArrayList<Integer> mem) {
 		
@@ -122,6 +127,25 @@ public class ass1_comp3010 {
 			}
 		}
 	}
+	
+	
+	// Main function that sorts arr[l..r] using merge()
+    // Modified code from GeekforGeek
+    // https://www.geeksforgeeks.org/merge-sort/ 
+    public static void sort(ArrayList<Integer> members, ArrayList<Integer> groups, int l, int r)
+    {
+        if (l < r) {
+            // Find the middle point
+            int m =l+ (r-l)/2;
+ 
+            // Sort first and second halves
+            sort(members, groups, l, m);
+            sort(members, groups, m + 1, r);
+ 
+            // Merge the sorted halves
+            merge(members, groups, l, m, r);
+        }
+    }
 	
     public static void merge(ArrayList<Integer> mem, ArrayList<Integer> grp, int l, int m, int r)
     {
@@ -183,24 +207,6 @@ public class ass1_comp3010 {
             k++;
         }
     }
- 
-    // Main function that sorts arr[l..r] using
-    // merge()
-    public static void sort(ArrayList<Integer> members, ArrayList<Integer> groups, int l, int r)
-    {
-        if (l < r) {
-            // Find the middle point
-            int m =l+ (r-l)/2;
- 
-            // Sort first and second halves
-            sort(members, groups, l, m);
-            sort(members, groups, m + 1, r);
- 
-            // Merge the sorted halves
-            merge(members, groups, l, m, r);
-        }
-    }
-	
 }
 
 
